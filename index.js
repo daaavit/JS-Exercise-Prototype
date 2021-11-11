@@ -39,12 +39,33 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-  
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+
+}
+Person.prototype.eat = function (edible) {
+  if (this.stomach.length < 10) {
+    this.stomach.push(edible);
+  }
 }
 
+Person.prototype.poop = function () {
+  this.stomach = [];
+}
+
+Person.prototype.toString = function () {
+  return `${this.name} ${this.age}`;
+}
+
+const bob = new Person('bob', 23);
+console.log(bob.toString());
 
 
+bob.eat('sd');
+
+bob.poop();
 
 
 
@@ -63,11 +84,31 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-  
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
 }
 
+Car.prototype.fill = function(gallons){
+  this.tank = this.tank + gallons;
+}
 
+Car.prototype.drive = function (distance) {
+  this.odometer = this.odometer + distance;
+  this.tank = this.tank - distance;
+  this.milesPerGallon = this.milesPerGallon * this.tank;
+  if(this.tank === 0) {
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }
+  return this.drive;
+}
+
+// const lexus = new Car('Lexus', 18);
+// console.log(lexus.drive());
+// console.log(lexus.fill());
+// console.log(lexus);
 /*
   TASK 3
     - Write a Baby constructor subclassing Person.
@@ -75,9 +116,18 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
- 
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy= favoriteToy;
+
 }
+
+Baby.prototype = Object.create(Person.prototype)
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}`
+}
+
+const andy = new Baby('andy', 2, 'cars')
 
 
 /* 
@@ -93,14 +143,14 @@ function Baby() {
 ///////// END OF CHALLENGE /////////
 
 /* 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 */
-function foo(){
+function foo() {
   console.log('its working!');
   return 'bar';
 }
 foo();
 module.exports = {
   foo,
-  Person, 
+  Person,
   Car,
   Baby
 }
